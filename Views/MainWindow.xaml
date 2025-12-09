@@ -1,0 +1,89 @@
+﻿<Window x:Class="InventoryManager.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InventoryManager"
+
+        mc:Ignorable="d"
+        Title="Gestión de Productos" Height="450" Width="800">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- FILA 0: Título -->
+        <TextBlock Text="Gestión de Productos"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   Margin="10"
+                   HorizontalAlignment="Center"/>
+
+        <!-- FILA 1: Contenido principal -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- TABLA DE PRODUCTOS --> 
+            <DataGrid  Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding Productos}" SelectedItem="{Binding ProductoSeleccionado, Mode=TwoWay}" ColumnWidth="*">
+                <DataGrid.Columns>
+                     <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+                     <DataGridTextColumn Header="Nombre" Binding="{Binding ProductName}" />
+                     <DataGridTextColumn Header="Precio" Binding="{Binding Precio}" />
+                     <DataGridTextColumn Header="Stock" Binding="{Binding Stock}" />
+                     <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria}" />
+                     <DataGridTextColumn Header="Total" Binding="{Binding PrecioTotal}" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- FORMULARIO -->
+            <StackPanel Grid.Column="1"
+                        Margin="10"
+                        Orientation="Vertical">
+
+                <TextBlock Text="Nombre"/>
+                <TextBox Text="{Binding ProductName, Mode=TwoWay}" 
+                         Margin="0 5"/>
+
+                <TextBlock Text="Precio"/>
+                <TextBox Text="{Binding Precio, Mode=TwoWay}" 
+                         Margin="0 5"/>
+                <TextBlock Text="Stock"/>
+                <TextBox Text="{Binding Stock, Mode=TwoWay}" 
+                         Margin="0 5"/>
+                <TextBlock Text="Categoría"/>
+                <ComboBox ItemsSource="{Binding Categorias}"
+                         SelectedItem="{Binding CategoriaSeleccionada, Mode=TwoWay}"
+                         Margin="0 5"/>
+                
+                <Button Content="Guardar"
+                        Height="25"
+                        Margin="0 10"
+                        Command="{Binding GuardarProductoCommand}"/>
+
+                <Button Content="Eliminar"
+                        Height="25"
+                        Margin="0 10"
+                        Command="{Binding EliminarProductoCommand}"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- FILA 2: Barra inferior -->
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="10">
+
+            <Button Content="Exportar CSV" Margin="5"/>
+            
+            <!-- Podrías bindear este comando a uno del VM -->
+            <Button Content="Salir" Margin="5" 
+                    Command="{Binding SalirCommand, Mode=OneWay}"/>
+        </StackPanel>
+    </Grid>
+</Window>
