@@ -18,7 +18,7 @@ InventoryManager es una aplicación desktop que permite:
 - **.NET 9.0 (Windows)** - Framework de ejecución
 - **XAML** - Markup language para UI declarativa
 - **MVVM Pattern** - Arquitectura de presentación
-- **Almacenamiento en memoria** - Actualmente usa List<T> en memoria
+- **Almacenamiento** - Actualmente usa SQlite pero se puede reemplazar por memoria(List<T>)
 
 ## 📁 Estructura del Proyecto
 
