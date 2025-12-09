@@ -30,7 +30,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- TABLA DE PRODUCTOS --> 
-            <DataGrid  Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding Productos}" SelectedItem="{Binding ProductoSeleccionado, Mode=TwoWay}" ColumnWidth="*">
+            <DataGrid  Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding Productos}" SelectedItem="{Binding ProductoSeleccionado, Mode=TwoWay}" ColumnWidth="*" IsReadOnly="True">
                 <DataGrid.Columns>
                      <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
                      <DataGridTextColumn Header="Nombre" Binding="{Binding ProductName}" />
@@ -63,12 +63,15 @@
                 
                 <Button Content="Guardar"
                         Height="25"
-                        Margin="0 10"
+                        Margin="0 5"
                         Command="{Binding GuardarProductoCommand}"/>
-
+                <Button Content="Limpiar Campos"
+                        Height="25"
+                        Margin="0 5"
+                        Command="{Binding LimpiarFormularioCommand}"/>
                 <Button Content="Eliminar"
                         Height="25"
-                        Margin="0 10"
+                        Margin="0 5"
                         Command="{Binding EliminarProductoCommand}"/>
             </StackPanel>
         </Grid>

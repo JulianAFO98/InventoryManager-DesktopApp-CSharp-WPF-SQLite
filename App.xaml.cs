@@ -7,17 +7,28 @@ using InventoryManager.Services;
 namespace InventoryManager;
 
 /// <summary>
-/// Interaction logic for App.xaml
+/// Punto de entrada de la aplicación InventoryManager.
+/// Configura la inyección de dependencias y inicializa la ventana principal con el patrón MVVM.
 /// </summary>
 public partial class App : Application
 {
+    /// <summary>
+    /// Se ejecuta al iniciar la aplicación.
+    /// Realiza la inyección de dependencias: crea el repositorio, servicio, controlador y ViewModel.
+    /// Luego crea y muestra la ventana principal.
+    /// </summary>
+    /// <param name="e">Argumentos de inicio de la aplicación.</param>
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        var repo = new ProductRepositoryList();
-        var service = new ProductService(repo);
-        var controller = new ProductController(service);
-        var vm = new ProductViewModel(controller);
+        
+        // Inyección de dependencias: crear las capas de la aplicación
+        var repo = new ProductRepository();                    // Capa de datos
+        var service = new ProductService(repo);                    // Capa de servicio
+        var controller = new ProductController(service);           // Capa de controlador
+        var vm = new ProductViewModel(controller);                 // Capa de presentación (ViewModel)
+        
+        // Crear y mostrar la ventana principal con el ViewModel
         var ventana = new MainWindow(vm);
         ventana.Show();
     }

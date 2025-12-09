@@ -12,13 +12,20 @@ using InventoryManager.ViewModels;
 namespace InventoryManager.Views;
 
 /// <summary>
-/// Interaction logic for MainWindow.xaml
+/// Ventana principal de la aplicación InventoryManager.
+/// Presenta la interfaz de usuario para gestionar productos (crear, editar, eliminar, visualizar).
+/// Utiliza el patrón MVVM con ProductViewModel como fuente de datos.
 /// </summary>
 public partial class MainWindow : Window
 {
-   public MainWindow(ProductViewModel viewModel)
-{
-    InitializeComponent();
-    DataContext = viewModel;
-}
+    /// <summary>
+    /// Constructor de la ventana principal.
+    /// Inicializa los componentes XAML y establece el ViewModel como contexto de datos.
+    /// </summary>
+    /// <param name="viewModel">El ProductViewModel que proporciona los datos y comandos para la UI.</param>
+    public MainWindow(ProductViewModel viewModel)
+    {
+        InitializeComponent();
+        DataContext = viewModel;
+    }
 }

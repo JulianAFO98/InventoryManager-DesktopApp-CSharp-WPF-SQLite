@@ -25,6 +25,7 @@ namespace InventoryManager.ViewModels
         public ICommand CargarProductosCommand { get; }
         public ICommand GuardarProductoCommand { get; }
         public ICommand EliminarProductoCommand { get; }
+        public ICommand LimpiarFormularioCommand { get; }
 
         public ProductViewModel(ProductController controller)
         {
@@ -34,6 +35,7 @@ namespace InventoryManager.ViewModels
             CargarProductosCommand = new RelayCommand(CargarProductos);
             GuardarProductoCommand = new RelayCommand(GuardarProducto);
             EliminarProductoCommand = new RelayCommand(EliminarProducto);
+            LimpiarFormularioCommand = new RelayCommand(LimpiarFormulario);
 
             Productos = new ObservableCollection<Product>();
             Categorias = new ObservableCollection<string>
@@ -48,6 +50,9 @@ namespace InventoryManager.ViewModels
             CargarProductos();
         }
 
+        /// <summary>
+        /// Notifica a los observadores cuando una propiedad cambia (patrón INotifyPropertyChanged).
+        /// </summary>
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -116,10 +121,9 @@ namespace InventoryManager.ViewModels
 
 
 
-        // ------------------------------------------
-        //  MÉTODOS (LÓGICA)
-        // ------------------------------------------
-
+        /// <summary>
+        /// Carga todos los productos desde el controlador y los muestra en la lista observable.
+        /// </summary>
         private void CargarProductos()
         {
             Productos.Clear();
@@ -127,6 +131,11 @@ namespace InventoryManager.ViewModels
                 Productos.Add(p);
         }
 
+        /// <summary>
+        /// Guarda o actualiza un producto. Si no hay producto seleccionado, crea uno nuevo.
+        /// Si hay uno seleccionado, actualiza sus datos con confirmación.
+        /// Valida que todos los campos sean correctos antes de guardar.
+        /// </summary>
         private void GuardarProducto()
         {
             // Validaciones compartidas
@@ -186,9 +195,16 @@ namespace InventoryManager.ViewModels
                     Stock = Stock,
                     Categoria = CategoriaSeleccionada
                 };
+
                 try
                 {
-                    _controller.ActualizarProducto(ProductoSeleccionado.Id, actualizado);
+                    var result = MessageBox.Show(
+                    $"¿Está seguro de modificar este producto?\n({ProductoSeleccionado.ProductName})",
+                    "Confirmación",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.Yes)
+                        _controller.ActualizarProducto(ProductoSeleccionado.Id, actualizado);
                 }
                 catch (Exception ex)
                 {
@@ -202,16 +218,26 @@ namespace InventoryManager.ViewModels
         }
 
 
+        /// <summary>
+        /// Elimina el producto seleccionado tras pedir confirmación al usuario.
+        /// Si no hay producto seleccionado, muestra un mensaje de error.
+        /// </summary>
         private void EliminarProducto()
         {
-            if (Id < 0)
+            if (_productoSeleccionado == null)
             {
                 MessageBox.Show("Seleccione un producto para eliminar.");
                 return;
             }
             try
             {
-                _controller.EliminarProducto(Id);
+                var result = MessageBox.Show(
+                   $"¿Está seguro de eliminar este producto?\n({ProductoSeleccionado?.ProductName})",
+                   "Confirmación",
+                   MessageBoxButton.YesNo,
+                   MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                    _controller.EliminarProducto(Id);
             }
             catch (Exception ex)
             {
@@ -225,6 +251,10 @@ namespace InventoryManager.ViewModels
             }
         }
 
+        /// <summary>
+        /// Limpia todos los campos del formulario y deselecciona el producto actual.
+        /// Se ejecuta después de guardar o eliminar un producto.
+        /// </summary>
         private void LimpiarFormulario()
         {
             Id = 0;
