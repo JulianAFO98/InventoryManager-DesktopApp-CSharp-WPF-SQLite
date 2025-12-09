@@ -140,14 +140,13 @@ bin/Debug/net9.0-windows/InventoryManager.exe
 
 ## 💾 Almacenamiento de Datos
 
-**Estado actual**: Almacenamiento en memoria (List<T>)
+**Estado Disponible**: Almacenamiento en memoria (List<T>)
 - Los datos se pierden al cerrar la aplicación
 - Ideal para pruebas y desarrollo
 - Rápido y sin configuración
 
-**Disponible para futuro**: SQLite local
-- Código comentado para conectar con BD SQLite
-- Requiere: NuGet `System.Data.SQLite`
+**Estado Actual**: SQLite local
+- Requiere: NuGet `Microsoft.Data.Sqlite`
 - Proporciona persistencia permanente
 
 ## 🔧 Compilar para Distribución
